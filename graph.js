@@ -1,55 +1,91 @@
+
 const canvas = document.getElementById("graph");
 const ctx = canvas.getContext("2d");
 
 function updateGraph() {
-    getDisplaySettings()
-    setSize()
-    updateScale()
-    drawBackground()
-}
+    {
+        userSize = document.getElementById("canvasSize").value;  // get data
+        document.getElementById("displaySize").innerHTML = userSize
 
-function getDisplaySettings() {
-    userSize = document.getElementById("canvasSize").value;
-    document.getElementById("displaySize").innerHTML = userSize
-}
-function setSize() {
-    if (window.innerHeight < window.innerWidth) {
-        canvas.width = (window.innerHeight / userSize);
-        canvas.height = (window.innerHeight / userSize);
-        
+        scaleX = Math.round(document.getElementById("scaleX").value**2)
+        document.getElementById("displayScaleX").innerHTML = scaleX
+
+        scaleY = Math.round(document.getElementById("scaleY").value**2)
+        document.getElementById("displayScaleY").innerHTML = scaleY
     }
-    else {
-        canvas.width = (window.innerWidth / userSize);
-        canvas.height = (window.innerWidth / userSize);
+
+    {
+        if (window.innerHeight < window.innerWidth) {  //change size
+            canvas.width = (window.innerHeight / userSize);
+            canvas.height = (window.innerHeight / userSize);
+        }
+        else {
+            canvas.width = (window.innerWidth / userSize);
+            canvas.height = (window.innerWidth / userSize);
+        }
     }
+
+    {
+        ctx.beginPath();
+        ctx.rect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#ffffff";
+        ctx.fill()
+    
+        ctx.beginPath()
+        ctx.moveTo(canvas.width / 2, 0)
+        ctx.lineTo(canvas.width / 2, canvas.height)
+        ctx.moveTo(0,canvas.height / 2)
+        ctx.lineTo(canvas.width, canvas.height / 2)
+        ctx.strokeStyle = "#000000";
+        ctx.stroke()
+    }
+
+    {
+        ctx.strokeStyle = "#80808080";
+        for (i in [...Array(scaleX * 2 +1).keys()]) {
+            console.log(i -scaleX)
+            ctx.beginPath()
+            // canvas.height/2 -10
+            ctx.moveTo(calcPosX(i - scaleX), canvas.height * 0.05)
+            ctx.lineTo(calcPosX(i - scaleX), canvas.height * 0.95)
+            ctx.stroke()
+        }
+        for (i in [...Array(scaleY * 2 +1).keys()]) {
+            console.log(i -scaleY)
+            ctx.beginPath()
+    
+            ctx.moveTo(canvas.width * 0.05, calcPosY(i - scaleY))
+            ctx.lineTo(canvas.width * 0.95, calcPosY(i - scaleY))
+            ctx.stroke()
+        }
+    }
+
 }
 
-function updateScale() {
-    scaleX = 100 / canvas.width * userScalewidth;
-    scaleY = 100 / canvas.height * userScaleHeight;
+function calcPosX(x) {
+    return calculatePosition(x,0)[0];
 }
 
-function drawBackground() {
-    ctx.beginPath();
-    ctx.rect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "#ffffff";
-    ctx.fill()
+function calcPosY(y) {
+    return calculatePosition(0,y)[1];
+}
 
-    ctx.beginPath()
-    ctx.moveTo(canvas.width / 2, 0)
-    ctx.lineTo(canvas.width / 2, canvas.height)
-    ctx.moveTo(0,canvas.height / 2)
-    ctx.lineTo(canvas.width, canvas.height / 2)
-    ctx.fillStyle = "#000000";
-    ctx.stroke()
+function calculatePosition(x, y)  {
+
+    middle = [canvas.width/2, canvas.height/2];
+
+    scaleMultiplyX = middle[0] / scaleX * 0.9;
+    scaleMultiplyY = middle[1] / scaleY * 0.9;
+
+    returnX = x * scaleMultiplyX + middle[0];
+    returnY = y * scaleMultiplyY + middle[1];
+
+    return [returnX, returnY];
 }
 
 //scale vareables
-userScalewidth = 1;
-userScaleHeight = 1;
 userSize = 2;
-scaleX = null;
-scaleY = null;
-
+scaleX = 9;
+scaleY = 9;
 
 updateGraph()

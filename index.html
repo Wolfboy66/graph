@@ -7,7 +7,7 @@
         <meta name="Description" content="Draw graphs online">
         <link rel="icon" href="./favicon.ico">
         <link rel="preload" href="./script.js" as="script" type="text/javascript">
-        <link rel="preload" href="./graphbackground.js" as="script" type="text/javascript">
+        <link rel="preload" href="./graph.js" as="script" type="text/javascript">
         <link rel="stylesheet" href="./style.css">
     </head>
     <body>
@@ -82,12 +82,20 @@
                 <div id="otherInputs">
 
                     <p>Display settings:</p>
-
-                    <input id="canvasSize" type="range" min="1" max="5" value="2" class="slider" step="0.1" oninput="updateGraph()">
-                    <label for="canvasSize">Display size: <a id="displaySize"></a></label>
+                    <div>
+                        <input id="canvasSize" type="range" min="1" max="5" value="2" class="slider" step="0.1" oninput="updateGraph()">
+                        <label for="canvasSize">Display size: <a id="displaySize"></a></label>
+                    </div>
+                    <div>
+                        <input id="scaleX" type="range" min="1" max="10" value="3" class="slider" step="0.01" oninput="updateGraph()">
+                        <label for="scaleX">Scale X: <a id="displayScaleX"></a></label>
+                    </div>
+                    <div>
+                        <input id="scaleY" type="range" min="1" max="10" value="3" class="slider" step="0.01" oninput="updateGraph()">
+                        <label for="scaleY">Scale Y: <a id="displayScaleY"></a></label>
+                    </div>
 
                 </div>
-
 
             </div>
 
