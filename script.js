@@ -34,6 +34,7 @@ function update() {
     inputUpdateExponentialParameters(false)
     changeInput()
     outputFormula()
+    updateGraph()
 }
 
 function changeInput() {
@@ -94,5 +95,4 @@ var exponentialD = null;
 var exponentialP = null;
 var exponentialE = null;
 
-inputUpdateGraphType()
-inputUpdateLinearParameters()
+update()

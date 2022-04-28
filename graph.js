@@ -30,7 +30,7 @@ function updateGraph() {
         ctx.rect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = "#ffffff";
         ctx.fill()
-    
+
         ctx.beginPath()
         ctx.moveTo(canvas.width / 2, 0)
         ctx.lineTo(canvas.width / 2, canvas.height)
@@ -42,24 +42,28 @@ function updateGraph() {
 
     {
         ctx.strokeStyle = "#80808080";
+        ctx.fillStyle = "#000000";
+        ctx.font = '16px serif';
+        ctx.textAlign = "center"
         for (i in [...Array(scaleX * 2 +1).keys()]) {
-            console.log(i -scaleX)
             ctx.beginPath()
             // canvas.height/2 -10
             ctx.moveTo(calcPosX(i - scaleX), canvas.height * 0.05)
             ctx.lineTo(calcPosX(i - scaleX), canvas.height * 0.95)
+            ctx.fillText((i - scaleX).toString(), calcPosX(i - scaleX), canvas.height / 2 + 15)
             ctx.stroke()
         }
         for (i in [...Array(scaleY * 2 +1).keys()]) {
-            console.log(i -scaleY)
             ctx.beginPath()
-    
+
             ctx.moveTo(canvas.width * 0.05, calcPosY(i - scaleY))
             ctx.lineTo(canvas.width * 0.95, calcPosY(i - scaleY))
+            ctx.fillText((i - scaleY).toString(), canvas.width / 2 + 10, calcPosY(i - scaleY))
             ctx.stroke()
         }
     }
 
+    if (inputGraphType == "linear") drawLinearGraph(); else drawExponentialCurve();
 }
 
 function calcPosX(x) {
@@ -78,14 +82,49 @@ function calculatePosition(x, y)  {
     scaleMultiplyY = middle[1] / scaleY * 0.9;
 
     returnX = x * scaleMultiplyX + middle[0];
-    returnY = y * scaleMultiplyY + middle[1];
+    returnY = -1 * y * scaleMultiplyY + middle[1];
 
     return [returnX, returnY];
 }
+
+function drawExponentialCurve() {
+    ctx.beginPath()
+    ctx.strokeStyle = "#f00"
+    x = (1 - middle[0]) / scaleMultiplyX
+    y = exponentialA*Math.pow(x - exponentialD, exponentialP) + parseFloat(exponentialE)
+    coordY = calcPosY(y)
+    ctx.moveTo(1, coordY)
+    for (i in [...Array(canvas.width).keys()]) {
+        x = (i - middle[0]) / scaleMultiplyX
+        y = (exponentialA*Math.pow(x - exponentialD, exponentialP)) + parseFloat(exponentialE)
+        coordY = calcPosY(y)
+        ctx.lineTo(i, coordY)
+    }
+    ctx.stroke()
+}
+
+function drawLinearGraph() {
+    ctx.beginPath()
+    ctx.strokeStyle = "#f00"
+    x = (1 - middle[0]) / scaleMultiplyX
+    y =  linearM*x + parseFloat(linearB)
+    coordY = calcPosY(y)
+    ctx.moveTo(1, coordY)
+    for (i in [...Array(canvas.width).keys()]) {
+        x = (i - middle[0]) / scaleMultiplyX
+        y = linearM*x + parseFloat(linearB)
+        coordY = calcPosY(y)
+        ctx.lineTo(i, coordY)
+    }
+    ctx.stroke()
+}
+
 
 //scale vareables
 userSize = 2;
 scaleX = 9;
 scaleY = 9;
+scaleMultiplyX = null;
+scaleMultiplyY = null;
 
 updateGraph()
